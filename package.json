@@ -1,0 +1,25 @@
+{
+  "name": "@alik6/bun-tailwind-plugin",
+  "version": "0.0.1",
+  "author": {
+    "name": "alik6",
+    "url": "https://github.com/alik-6/bun-tailwind-plugin",
+    "email": "authastefard@proton.me"
+  },
+  "main": "index.ts",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "license": "MIT",
+  "type": "module",
+  "keywords": ["bun-plugin", "bun-tailwind-plugin", "tailwind-plugin", "tailwind", "tailwind-bun-plugin", "bun-plugin-tailwind"],
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
+  }
+}

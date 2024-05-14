@@ -25,6 +25,7 @@
     "postcss",
     "postcss-plugin",
     "tailwind",
+    "tailwindcss",
     "tailwind-bun-plugin",
     "tailwind-css",
     "tailwind-plugin",

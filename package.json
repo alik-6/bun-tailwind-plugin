@@ -16,7 +16,20 @@
   },
   "license": "MIT",
   "type": "module",
-  "keywords": ["bun-plugin", "bun-tailwind-plugin", "tailwind-plugin", "tailwind", "tailwind-bun-plugin", "bun-plugin-tailwind"],
+  "keywords": [
+    "bun",
+    "bun-plugin",
+    "bun-tailwind-plugin",
+    "bunjs",
+    "css",
+    "postcss",
+    "postcss-plugin",
+    "tailwind",
+    "tailwind-bun-plugin",
+    "tailwind-css",
+    "tailwind-plugin",
+    "bun-plugin-tailwind"
+  ],
   "dependencies": {
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",

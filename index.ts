@@ -10,19 +10,20 @@ export type TailwindPluginConfig = {
   outputFile?: string;
   inputFile: string;
 };
-
-const createTailwindConfig = (filePath: string) =>
-  exists(filePath).then((exists) => {
-    if (exists) return;
-    const directory = parse(filePath).dir;
+// TODO: Make it return the valid path instead of main
+const createTailwindConfig = async (inputFile: string) => {
+  if (!(await exists(inputFile))) {
+    const directory = parse(inputFile).dir;
     mkdir(directory, { recursive: true }).catch((error) =>
       console.error(error)
     );
     Bun.write(
-      Bun.file(filePath),
+      Bun.file(inputFile),
       "@tailwind base;\n@tailwind components;\n@tailwind utilities;"
     );
-  });
+  }
+  return parse(inputFile);
+};
 /**
 
  * @description The Tailwind Plugin for Bun is a plugin designed to integrate Tailwind CSS with the Bun.
@@ -37,13 +38,12 @@ const TailwindPlugin = (config: TailwindPluginConfig): BunPlugin => {
     name: "@alik6/bun-tailwind-plugin",
     target: undefined,
     setup(build) {
-      createTailwindConfig(config.inputFile).then(async () => {
-        const inputStylesheetPath = parse(config.inputFile);
+      createTailwindConfig(config.inputFile).then(async (inputFile) => {
         let outputPath = !config.outputFile
           ? build.config.outdir ?? "dist/"
           : config.outputFile;
         if (outputPath.endsWith("/")) {
-          outputPath = join(outputPath, inputStylesheetPath.base);
+          outputPath = join(outputPath, inputFile.base);
         }
         const inputStylesheetContent = await Bun.file(config.inputFile).text();
         const processedCss = await postcss([

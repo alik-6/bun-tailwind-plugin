@@ -8,21 +8,29 @@ import { parse, join } from "node:path";
 export type TailwindPluginConfig = {
   tailwindConfig: tailwind.Config;
   outputFile?: string;
+  configPath?: string;
   inputFile: string;
 };
 // TODO: Make it return the valid path instead of main
-const createTailwindConfig = async (inputFile: string) => {
-  if (!(await exists(inputFile))) {
-    const directory = parse(inputFile).dir;
-    mkdir(directory, { recursive: true }).catch((error) =>
+const createTailwindConfig = async (config: TailwindPluginConfig) => {
+  const inputSrc = parse(config.inputFile);
+  if (!(await exists(config.inputFile))) {
+    mkdir(inputSrc.dir, { recursive: true }).catch((error) =>
       console.error(error)
     );
     Bun.write(
-      Bun.file(inputFile),
+      Bun.file(config.inputFile),
       "@tailwind base;\n@tailwind components;\n@tailwind utilities;"
     );
   }
-  return parse(inputFile);
+  if (!config.configPath) config.configPath = inputSrc.dir;
+  
+  Bun.write(
+    Bun.file(`${config.configPath}/tailwind.config.js`),
+    `/** @type {import('tailwindcss').Config} */
+  module.exports = ${JSON.stringify(config.tailwindConfig)}`
+  );
+  return parse(config.inputFile);
 };
 /**
 
@@ -38,7 +46,7 @@ const TailwindPlugin = (config: TailwindPluginConfig): BunPlugin => {
     name: "@alik6/bun-tailwind-plugin",
     target: undefined,
     setup(build) {
-      createTailwindConfig(config.inputFile).then(async (inputFile) => {
+      createTailwindConfig(config).then(async (inputFile) => {
         let outputPath = !config.outputFile
           ? build.config.outdir ?? "dist/"
           : config.outputFile;

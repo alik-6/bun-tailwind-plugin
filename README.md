@@ -36,6 +36,8 @@ build({
       outputFile: "dist/styles.css",
       // path of input file, created if not found with the default tailwind headers
       inputFile: "src/styles.css",
+      // path where tailwind.config.js will be generated, useful for autocompletion, each time the build method is called the tailwind.config.js will be synced with `tailwindConfig`, recommended path is 'base dir of the project'
+      configPath: '.'
     }),
   ],
 }).catch((e) => console.error(e));
